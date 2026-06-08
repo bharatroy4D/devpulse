@@ -18,9 +18,10 @@ export const initDB = async () => {
 
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-    `)
+            )`)
+            
+        console.log("Database connection successfully");
     } catch (error) {
-
+        console.log("DB error", error);
     }
 }
