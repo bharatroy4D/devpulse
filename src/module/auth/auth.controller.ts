@@ -18,6 +18,23 @@ const signUp = async (req: Request, res: Response) => {
         })
     }
 }
+const login = async (req: Request, res: Response) => {
+    try {
+        const result = authService.loginIntoDB(req.body)
+        res.status(200).json({
+            success: true,
+            message: "Login Successfully",
+            data: result
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: true,
+            message: "Something went worng",
+            data: error
+        })
+    }
+
+}
 export const authController = {
-    signUp
+    signUp, login
 }
