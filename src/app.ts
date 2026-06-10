@@ -6,6 +6,7 @@ app.use(express.json());
 app.get('/', (req: Request, res: Response) => {
     res.send("hello devpluse")
 })
-app.use('/api/auth', route)
+app.use('/api/auth', route);
+app.use('/api/issues', route)
 
 export default app;
