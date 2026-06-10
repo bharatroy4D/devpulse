@@ -2,8 +2,9 @@ import bcrypt from "bcryptjs";
 import { pool } from "../../db";
 import jwt from "jsonwebtoken";
 import config from "../../config";
+import type { userType } from "./auth.interface";
 
-const signUpIntoDB = async (payload: any) => {
+const signUpIntoDB = async (payload: userType) => {
     const { name, password, email, role } = payload;
     const hashPassword = await bcrypt.hash(password, 10);
 
