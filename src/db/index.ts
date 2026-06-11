@@ -31,12 +31,10 @@ export const initDB = async () => {
             status VARCHAR(20)
             DEFAULT 'open'
             CHECK (status IN('open', 'in_progress', 'resolved')),
-            reporter_id INTEGER NOT NULL,
+            reporter_id INTEGER,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
             )`)
-
 
         console.log("Database connection successfully");
     } catch (error) {
