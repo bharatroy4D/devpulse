@@ -31,7 +31,7 @@ export const initDB = async () => {
             status VARCHAR(20)
             DEFAULT 'open'
             CHECK (status IN('open', 'in_progress', 'resolved')),
-            reporter_id INTEGER,
+            reporter_id INTEGER NOT NULL REFERENCES users(id),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )`)

@@ -1,9 +1,12 @@
 import type { Request, Response } from "express";
 import { issuesService } from "./issues.service";
+import type { JwtPayload } from "jsonwebtoken";
 
 export const createIssues = async (req: Request, res: Response) => {
+    const reporterId = req.user.id;
+
     try {
-        const result = await issuesService.createIssuesIntoDB(req.body)
+        const result = await issuesService.createIssuesIntoDB(req.body, reporterId)
         res.status(201).json({
             success: true,
             message: "issues Create successfully",
