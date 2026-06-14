@@ -16,8 +16,10 @@ const createIssuesIntoDB = async (payload: any, reporterId: number) => {
 };
 const getSingleIssuesIntoDB = async (id: string) => {
     const result = await pool.query(`
-    
-    `)
+    SELECT * FROM issues WHERE id=$1
+
+    `, [id])
+    return result;
 }
 export const issuesService = {
     createIssuesIntoDB, getSingleIssuesIntoDB
