@@ -13,7 +13,12 @@ const createIssuesIntoDB = async (payload: any, reporterId: number) => {
     `, [title, description, type, reporterId])
     return result;
 
+};
+const getSingleIssuesIntoDB = async (id: string) => {
+    const result = await pool.query(`
+    
+    `)
 }
 export const issuesService = {
-    createIssuesIntoDB
+    createIssuesIntoDB, getSingleIssuesIntoDB
 }
