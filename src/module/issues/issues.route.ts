@@ -5,7 +5,7 @@ import auth from "../../middleware/auth";
 const router = Router();
 router.post('/', auth(), issuesController.createIssues);
 router.get('/:id', issuesController.getSingleIssues);
-router.patch('/:id', issuesController.updateIssues)
+router.patch('/:id', auth(), issuesController.updateIssues)
 router.delete('/:id', auth('maintainer'), issuesController.deleteIssues)
 
 export const issuesRoute = router;

@@ -5,7 +5,6 @@ import { pool } from "../db";
 
 const auth = (...roles: any) => {
     return async (req: Request, res: Response, next: NextFunction) => {
-        console.log(roles);
         try {
             const token = req.headers.authorization;
             if (!token) {

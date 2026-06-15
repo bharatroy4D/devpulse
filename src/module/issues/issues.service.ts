@@ -50,8 +50,45 @@ const updateIssuesIntoDB = async (
     description?: string,
     type?: "bug" | "feature_request"
   },
-  user?: JwtPayload
+  user: JwtPayload
 ) => {
+  const issuesResult = await pool.query(`
+    SELECT * FROM issues WHERE id=$1
+    `, [issuesId])
+  const issues = issuesResult.rows[0];
+  if (!issues) {
+    throw new Error("issues not found!")
+  }
+  if (user.role === "contributor") {
+    if (issues.reporter_id !== user.id) {
+      throw new Error(`
+        statusCode:403,
+        message:"you can update only your own issues"
+        `)
+    }
+  }
+  if (issues.status !== "open") {
+    throw new Error(`
+      statusCode:409,
+      message:"only open issues can be updated"
+      `)
+  }
+
+  const title = payload.title ?? issues.title;
+  const description = payload.description ?? issues.description;
+  const type = payload.type ?? issues.type;
+
+  const result = await pool.query(`
+    UPDATE issues SET
+     title=$1,
+    description=$2,
+    type=$3,
+    updated_at=NOW() 
+    WHERE id=$4
+
+    RETURNING *
+    `, [title, description, type, issuesId])
+  return result;
 
 }
 const deleteIssuesIntoDB = async (id: string) => {

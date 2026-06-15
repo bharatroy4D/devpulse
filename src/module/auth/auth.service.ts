@@ -16,7 +16,6 @@ const signUpIntoDB = async (payload: userType) => {
         `, [name, hashPassword, email, role])
     delete result.rows[0].password
     return result;
-    console.log(result.rows[0]);
 };
 
 const loginIntoDB = async (payload: { email: string, password: string }) => {

@@ -1,8 +1,5 @@
 import type { Request, Response } from "express";
 import { issuesService } from "./issues.service";
-import type { JwtPayload } from "jsonwebtoken";
-import { Result } from "pg";
-import { pool } from "../../db";
 
 const createIssues = async (req: Request, res: Response) => {
     const reporterId = req.user.id;
@@ -49,11 +46,11 @@ const updateIssues = async (req: Request, res: Response) => {
     try {
         const issuesId = req.params.id;
 
-        const result = await issuesService.updateIssuesIntoDB(issuesId, req.body, req.user);
+        const result = await issuesService.updateIssuesIntoDB(issuesId as string, req.body, req.user!);
         res.status(200).json({
             success: true,
             message: "issues update successfully",
-            data: Result
+            data: result.rows[0]
         })
     } catch (error) {
         res.status(500).json({
