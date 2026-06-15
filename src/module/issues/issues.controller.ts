@@ -47,7 +47,9 @@ const getSingleIssues = async (req: Request, res: Response) => {
 };
 const updateIssues = async (req: Request, res: Response) => {
     try {
-        const result = await issuesService.updateIssuesIntoDB();
+        const issuesId = req.params.id;
+
+        const result = await issuesService.updateIssuesIntoDB(issuesId, req.body, req.user);
         res.status(200).json({
             success: true,
             message: "issues update successfully",
@@ -55,8 +57,8 @@ const updateIssues = async (req: Request, res: Response) => {
         })
     } catch (error) {
         res.status(500).json({
-            success: true,
-            message: "issues update ",
+            success: false,
+            message: "something went wrong! ",
             error: error
         })
     }

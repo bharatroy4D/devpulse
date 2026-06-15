@@ -1,3 +1,4 @@
+import type { JwtPayload } from "jsonwebtoken";
 import { pool } from "../../db";
 
 const createIssuesIntoDB = async (payload: any, reporterId: number) => {
@@ -42,7 +43,15 @@ const getSingleIssuesIntoDB = async (id: string) => {
 
   return result;
 };
-const updateIssuesIntoDB = async () => {
+const updateIssuesIntoDB = async (
+  issuesId: string,
+  payload: {
+    title?: string,
+    description?: string,
+    type?: "bug" | "feature_request"
+  },
+  user?: JwtPayload
+) => {
 
 }
 const deleteIssuesIntoDB = async (id: string) => {
