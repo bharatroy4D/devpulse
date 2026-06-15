@@ -16,6 +16,7 @@ const signUpIntoDB = async (payload: userType) => {
         `, [name, hashPassword, email, role])
     delete result.rows[0].password
     return result;
+    console.log(result.rows[0]);
 };
 
 const loginIntoDB = async (payload: { email: string, password: string }) => {
@@ -33,10 +34,12 @@ const loginIntoDB = async (payload: { email: string, password: string }) => {
     }
     const jwtPayload = {
         id: user.id,
+        email: user.email,
         name: user.name,
         role: user.role
     }
     const accessToken = await jwt.sign(jwtPayload, config.jwt_secrete as string, { expiresIn: "1d" })
+    delete result.rows[0]
     return { accessToken }
 }
 

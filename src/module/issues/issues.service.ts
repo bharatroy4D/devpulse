@@ -1,26 +1,26 @@
 import { pool } from "../../db";
 
 const createIssuesIntoDB = async (payload: any, reporterId: number) => {
-    const { title, description, type } = payload;
+  const { title, description, type } = payload;
 
-    const result = await pool.query(
-        `
+  const result = await pool.query(
+    `
     INSERT INTO issues(
     title, description,
     type , reporter_id)
     VALUES($1, $2, $3, $4)
     RETURNING *
     `, [title, description, type, reporterId])
-    return result;
+  return result;
 
 };
 const getSingleIssuesIntoDB = async (id: string) => {
-    // const result = await pool.query(`
-    // SELECT * FROM issues WHERE id=$1
+  // const result = await pool.query(`
+  // SELECT * FROM issues WHERE id=$1
 
-    // `, [id])
-    // return result;
-    const result = await pool.query(`
+  // `, [id])
+  // return result;
+  const result = await pool.query(`
   SELECT
     i.id,
     i.title,
@@ -40,19 +40,24 @@ const getSingleIssuesIntoDB = async (id: string) => {
   WHERE i.id = $1
   `, [id]);
 
-    return result;
+  return result;
+};
+const updateIssuesIntoDB = async () => {
+
 }
 const deleteIssuesIntoDB = async (id: string) => {
-    const result = await pool.query(`
+  const result = await pool.query(`
     DELETE FROM issues WHERE id=$1
     
     `, [id])
-    if (result.rowCount === 0) {
-        throw new Error('issues not found')
-    }
-    return result;
+  if (result.rowCount === 0) {
+    throw new Error('issues not found')
+  }
+  return result;
 }
 export const issuesService = {
-    createIssuesIntoDB, getSingleIssuesIntoDB,
-    deleteIssuesIntoDB
+  createIssuesIntoDB,
+  getSingleIssuesIntoDB,
+  updateIssuesIntoDB,
+  deleteIssuesIntoDB
 }

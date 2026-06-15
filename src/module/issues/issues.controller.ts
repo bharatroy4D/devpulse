@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
 import { issuesService } from "./issues.service";
 import type { JwtPayload } from "jsonwebtoken";
+import { Result } from "pg";
+import { pool } from "../../db";
 
 const createIssues = async (req: Request, res: Response) => {
     const reporterId = req.user.id;
@@ -43,6 +45,24 @@ const getSingleIssues = async (req: Request, res: Response) => {
         })
     }
 };
+const updateIssues = async (req: Request, res: Response) => {
+    try {
+        const result = await issuesService.updateIssuesIntoDB();
+        res.status(200).json({
+            success: true,
+            message: "issues update successfully",
+            data: Result
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: true,
+            message: "issues update ",
+            error: error
+        })
+    }
+
+}
+
 const deleteIssues = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
@@ -51,7 +71,7 @@ const deleteIssues = async (req: Request, res: Response) => {
         res.status(200).json({
             success: true,
             message: "issues delete successfully",
-            data:{}
+            data: {}
         })
     } catch (error) {
         res.status(500).json({
@@ -63,5 +83,5 @@ const deleteIssues = async (req: Request, res: Response) => {
 
 export const issuesController = {
     createIssues, getSingleIssues,
-    deleteIssues
+    deleteIssues, updateIssues
 }
