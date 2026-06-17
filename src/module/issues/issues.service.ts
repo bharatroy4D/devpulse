@@ -35,10 +35,17 @@ const getSingleIssuesIntoDB = async (id: string) => {
 
   return result;
 };
-const getAllIssuesIntoDB = async ()=>{
+const getAllIssuesIntoDB = async (
+  sort?: string,
+  type?: string,
+  status?: string
+) => {
 
 }
-const updateIssuesIntoDB = async (issuesId: string, payload: IUpdatedIssues, user: JwtPayload) => {
+const updateIssuesIntoDB = async (
+  issuesId: string,
+  payload: IUpdatedIssues,
+  user: JwtPayload) => {
 
   const issuesResult = await pool.query(`
     SELECT * FROM issues WHERE id=$1
