@@ -1,21 +1,22 @@
 import type { Request, Response } from "express";
 import { issuesService } from "./issues.service";
+import sendResponse from "../../utils/sendResponse";
 
 const createIssues = async (req: Request, res: Response) => {
     const reporterId = req.user.id;
 
     try {
         const result = await issuesService.createIssuesIntoDB(req.body, reporterId)
-        res.status(201).json({
+        sendResponse(res, 201, {
             success: true,
             message: "issues Create successfully",
             data: result.rows[0]
         })
     } catch (error) {
-        res.status(500).json({
+        sendResponse(res, 500, {
             success: true,
             message: "Failed to Create issues ",
-            error: error
+            data: error
         })
     }
 };
@@ -30,15 +31,16 @@ const getSingleIssues = async (req: Request, res: Response) => {
                 data: {}
             })
         }
-        res.status(200).json({
+        sendResponse(res, 200, {
             success: true,
             message: "issues retrived successfully",
             data: result.rows[0]
         })
     } catch (error) {
-        res.status(500).json({
+        sendResponse(res, 500, {
             success: false,
             message: "issues not found! ",
+            data: error
         })
     }
 };
@@ -70,16 +72,16 @@ const updateIssues = async (req: Request, res: Response) => {
         const issuesId = req.params.id;
 
         const result = await issuesService.updateIssuesIntoDB(issuesId as string, req.body, req.user!);
-        res.status(200).json({
+        sendResponse(res, 200, {
             success: true,
             message: "issues update successfully",
             data: result.rows[0]
         })
     } catch (error) {
-        res.status(500).json({
+        sendResponse(res, 500, {
             success: false,
             message: "something went wrong! ",
-            error: error
+            data: error
         })
     }
 
@@ -89,15 +91,16 @@ const deleteIssues = async (req: Request, res: Response) => {
     try {
         const result = await issuesService.deleteIssuesIntoDB(id as string)
 
-        res.status(200).json({
+        sendResponse(res, 200, {
             success: true,
             message: "issues delete successfully",
             data: {}
         })
     } catch (error) {
-        res.status(500).json({
+        sendResponse(res, 500, {
             success: false,
-            error: error
+            message: "issues delete fail!",
+            data: error
         })
     }
 }
