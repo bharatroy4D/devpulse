@@ -8,7 +8,7 @@ const auth = (...roles: any) => {
         try {
             const token = req.headers.authorization;
             if (!token) {
-                res.status(401).json({
+                return res.status(401).json({
                     success: false,
                     message: "Unauthorized access!"
                 })
@@ -20,13 +20,12 @@ const auth = (...roles: any) => {
             const user = userData.rows[0];
 
             if (roles.length && !roles.includes(user.role)) {
-                res.status(403).json({
+                return res.status(403).json({
                     success: false,
                     message: "forbidden"
                 })
             }
             req.user = decoded
-
             next();
 
         } catch (error) {

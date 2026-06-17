@@ -1,7 +1,8 @@
 import type { JwtPayload } from "jsonwebtoken";
 import { pool } from "../../db";
+import type { ICreateIssues, IUpdatedIssues } from "./issues.interface";
 
-const createIssuesIntoDB = async (payload: any, reporterId: number) => {
+const createIssuesIntoDB = async (payload: ICreateIssues, reporterId: number) => {
   const { title, description, type } = payload;
 
   const result = await pool.query(
@@ -16,20 +17,11 @@ const createIssuesIntoDB = async (payload: any, reporterId: number) => {
 
 };
 const getSingleIssuesIntoDB = async (id: string) => {
-  // const result = await pool.query(`
-  // SELECT * FROM issues WHERE id=$1
 
-  // `, [id])
-  // return result;
   const result = await pool.query(`
+
   SELECT
-    i.id,
-    i.title,
-    i.description,
-    i.type,
-    i.status,
-    i.created_at,
-    i.updated_at,
+   i.*,
     json_build_object(
       'id', u.id,
       'name', u.name,
@@ -43,15 +35,11 @@ const getSingleIssuesIntoDB = async (id: string) => {
 
   return result;
 };
-const updateIssuesIntoDB = async (
-  issuesId: string,
-  payload: {
-    title?: string,
-    description?: string,
-    type?: "bug" | "feature_request"
-  },
-  user: JwtPayload
-) => {
+const getAllIssuesIntoDB = async ()=>{
+
+}
+const updateIssuesIntoDB = async (issuesId: string, payload: IUpdatedIssues, user: JwtPayload) => {
+
   const issuesResult = await pool.query(`
     SELECT * FROM issues WHERE id=$1
     `, [issuesId])
@@ -90,7 +78,7 @@ const updateIssuesIntoDB = async (
     `, [title, description, type, issuesId])
   return result;
 
-}
+};
 const deleteIssuesIntoDB = async (id: string) => {
   const result = await pool.query(`
     DELETE FROM issues WHERE id=$1
@@ -105,5 +93,6 @@ export const issuesService = {
   createIssuesIntoDB,
   getSingleIssuesIntoDB,
   updateIssuesIntoDB,
-  deleteIssuesIntoDB
+  deleteIssuesIntoDB,
+  getAllIssuesIntoDB
 }

@@ -42,6 +42,29 @@ const getSingleIssues = async (req: Request, res: Response) => {
         })
     }
 };
+const getAllIssues = async (req: Request, res: Response) => {
+    try {
+        const { sort, type, status } = req.query;
+
+        const result = await issuesService.getAllIssuesIntoDB(
+            sort as string,
+            type as string,
+            status as string
+        )
+
+        res.status(200).json({
+            success: true,
+            message: "issues retrived successfully",
+            data: result
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Failt to retrived issues! ",
+            error: error
+        })
+    }
+}
 const updateIssues = async (req: Request, res: Response) => {
     try {
         const issuesId = req.params.id;
@@ -60,8 +83,7 @@ const updateIssues = async (req: Request, res: Response) => {
         })
     }
 
-}
-
+};
 const deleteIssues = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
@@ -82,5 +104,5 @@ const deleteIssues = async (req: Request, res: Response) => {
 
 export const issuesController = {
     createIssues, getSingleIssues,
-    deleteIssues, updateIssues
+    deleteIssues, updateIssues, getAllIssues
 }

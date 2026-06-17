@@ -1,7 +1,10 @@
-export interface userType {
+export interface ISignupUser {
     name: string,
     email: string,
-    password:string,
-    role:string
-
+    password: string,
+    role: string
+};
+export interface ILoginUser {
+    email: string,
+    password: string
 }
