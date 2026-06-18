@@ -8,7 +8,7 @@ A collaborative platform for software teams to report bugs, suggest features, an
 
 ## 📂 GitHub Repository
 
-https://github.com/yourusername/devpulse
+https://github.com/bharatroy4D/devpulse
 
 ---
 
