@@ -277,6 +277,7 @@ https://your-live-url.com
 
 # 👨‍💻 Author
 
-Your Name
+Your Name:
+Bharat Roy
 
 Backend Developer
