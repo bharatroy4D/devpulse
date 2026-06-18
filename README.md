@@ -4,7 +4,7 @@ A collaborative platform for software teams to report bugs, suggest features, an
 
 ## 🌐 Live API
 
-https://your-live-url.com
+[https://your-live-url.com](https://devpalse-dpobi6njb-bharat-roys-projects.vercel.app/)
 
 ## 📂 GitHub Repository
 
