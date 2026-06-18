@@ -2,21 +2,44 @@
         import {createRequire} from "module";
         const require = createRequire(import.meta.url)
         
+"use strict";
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 
 // src/app.ts
-import express from "express";
+var import_express3 = __toESM(require("express"), 1);
 
 // src/module/issues/issues.route.ts
-import { Router } from "express";
+var import_express = require("express");
 
 // src/db/index.ts
-import { Pool } from "pg";
+var import_pg = require("pg");
 
 // src/config/index.ts
-import dotenv from "dotenv";
-import path from "path";
-dotenv.config({
-  path: path.join(process.cwd(), ".env")
+var import_dotenv = __toESM(require("dotenv"), 1);
+var import_path = __toESM(require("path"), 1);
+import_dotenv.default.config({
+  path: import_path.default.join(process.cwd(), ".env")
 });
 var config = {
   databse_string: process.env.DATABASE_URL,
@@ -26,7 +49,7 @@ var config = {
 var config_default = config;
 
 // src/db/index.ts
-var pool = new Pool({
+var pool = new import_pg.Pool({
   connectionString: config_default.databse_string
 });
 var initDB = async () => {
@@ -266,7 +289,7 @@ var issuesController = {
 };
 
 // src/middleware/auth.ts
-import jwt from "jsonwebtoken";
+var import_jsonwebtoken = __toESM(require("jsonwebtoken"), 1);
 var auth = (...roles) => {
   return async (req, res, next) => {
     try {
@@ -277,7 +300,7 @@ var auth = (...roles) => {
           message: "Unauthorized access!"
         });
       }
-      const decoded = jwt.verify(token, config_default.jwt_secrete);
+      const decoded = import_jsonwebtoken.default.verify(token, config_default.jwt_secrete);
       const userData = await pool.query(`
             SELECT * FROM users WHERE email=$1
             `, [decoded.email]);
@@ -304,7 +327,7 @@ var USER_ROLE = {
 };
 
 // src/module/issues/issues.route.ts
-var router = Router();
+var router = (0, import_express.Router)();
 router.post("/", auth_default(), issuesController.createIssues);
 router.get("/:id", issuesController.getSingleIssues);
 router.get("/:id", issuesController.getAllIssues);
@@ -313,14 +336,14 @@ router.delete("/:id", auth_default(USER_ROLE.maintainer), issuesController.delet
 var issuesRoute = router;
 
 // src/module/auth/auth.route.ts
-import { Router as Router2 } from "express";
+var import_express2 = require("express");
 
 // src/module/auth/auth.service.ts
-import bcrypt from "bcryptjs";
-import jwt2 from "jsonwebtoken";
+var import_bcryptjs = __toESM(require("bcryptjs"), 1);
+var import_jsonwebtoken2 = __toESM(require("jsonwebtoken"), 1);
 var signUpIntoDB = async (payload) => {
   const { name, password, email, role } = payload;
-  const hashPassword = await bcrypt.hash(password, 10);
+  const hashPassword = await import_bcryptjs.default.hash(password, 10);
   const result = await pool.query(`
         INSERT INTO users
         (name, password, email,role)
@@ -339,7 +362,7 @@ var loginIntoDB = async (payload) => {
     throw new Error("User not found!");
   }
   const user = result.rows[0];
-  const matchPassword = await bcrypt.compare(password, user.password);
+  const matchPassword = await import_bcryptjs.default.compare(password, user.password);
   if (!matchPassword) {
     throw new Error("Invalid Crediential");
   }
@@ -349,7 +372,7 @@ var loginIntoDB = async (payload) => {
     name: user.name,
     role: user.role
   };
-  const accessToken = await jwt2.sign(jwtPayload, config_default.jwt_secrete, { expiresIn: "1d" });
+  const accessToken = await import_jsonwebtoken2.default.sign(jwtPayload, config_default.jwt_secrete, { expiresIn: "1d" });
   delete result.rows[0];
   return { accessToken };
 };
@@ -397,13 +420,13 @@ var authController = {
 };
 
 // src/module/auth/auth.route.ts
-var router2 = Router2();
+var router2 = (0, import_express2.Router)();
 router2.post("/signUp", authController.signUp);
 router2.post("/login", authController.login);
 var authRoute = router2;
 
 // src/app.ts
-import cors from "cors";
+var import_cors = __toESM(require("cors"), 1);
 
 // src/utils/globalErrorHandler.ts
 var globalErrorHandler = (err, req, res, next) => {
@@ -415,9 +438,9 @@ var globalErrorHandler = (err, req, res, next) => {
 var globalErrorHandler_default = globalErrorHandler;
 
 // src/app.ts
-var app = express();
-app.use(express.json());
-app.use(cors({
+var app = (0, import_express3.default)();
+app.use(import_express3.default.json());
+app.use((0, import_cors.default)({
   origin: "http://localhost:5000"
 }));
 app.get("/", (req, res) => {
@@ -433,4 +456,4 @@ app_default.listen(config_default.port, () => {
   initDB();
   console.log(`server is running port:${config_default.port}`);
 });
-//# sourceMappingURL=server.js.map
+//# sourceMappingURL=server.cjs.map
